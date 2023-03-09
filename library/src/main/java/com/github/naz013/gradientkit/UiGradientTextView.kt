@@ -2,23 +2,13 @@ package com.github.naz013.gradientkit
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextPaint
-import android.text.style.CharacterStyle
-import android.text.style.StrikethroughSpan
-import android.text.style.StyleSpan
-import android.text.style.UpdateAppearance
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 
 class UiGradientTextView : AppCompatTextView {
 
-  private val sections = mutableListOf<Section>()
+  private val textHelper = UiGradientTextHelper(this)
 
   constructor(context: Context) : super(context)
 
@@ -31,29 +21,32 @@ class UiGradientTextView : AppCompatTextView {
   )
 
   fun clearSections() {
-    sections.clear()
+    textHelper.clear()
     text = text.toString()
   }
 
   fun addStrikeThroughSection(startIndex: Int, endIndex: Int) {
-    val textString = text.toString()
-    val length = textString.length
-    if (startIndex < 0 || startIndex >= length) {
-      throw UiGradientException("Start index is out of bounds")
-    }
-    if (endIndex <= startIndex || endIndex > length) {
-      throw UiGradientException("End index is out of bounds")
-    }
-    val value = textString.substring(startIndex, endIndex)
-    sections.add(StrikeThroughSection(value, startIndex, endIndex))
-    prepareSections()
+    textHelper.addStrikeThroughSection(startIndex, endIndex)
   }
 
-  fun addStrikeThroughSection(value: String) {
+  fun addStrikeThroughSection(
+    strikeThroughText: String,
+    allOccurrences: Boolean = false
+  ) {
     val textString = text.toString()
-    val startIndex = textString.indexOf(value)
-    if (startIndex != -1) {
-      addStrikeThroughSection(startIndex, startIndex + value.length)
+    if (allOccurrences) {
+      findAllOccurrences(
+        where = textString,
+        query = strikeThroughText,
+        startIndex = 0
+      ) { start, end ->
+        addStrikeThroughSection(start, end)
+      }
+    } else {
+      val startIndex = textString.indexOf(strikeThroughText)
+      if (startIndex != -1) {
+        addStrikeThroughSection(startIndex, startIndex + strikeThroughText.length)
+      }
     }
   }
 
@@ -63,17 +56,7 @@ class UiGradientTextView : AppCompatTextView {
     @ColorInt startColor: Int,
     @ColorInt endColor: Int
   ) {
-    val textString = text.toString()
-    val length = textString.length
-    if (startIndex < 0 || startIndex >= length) {
-      throw UiGradientException("Start index is out of bounds")
-    }
-    if (endIndex <= startIndex || endIndex > length) {
-      throw UiGradientException("End index is out of bounds")
-    }
-    val value = textString.substring(startIndex, endIndex)
-    sections.add(GradientSection(value, startColor, endColor, startIndex, endIndex))
-    prepareSections()
+    textHelper.addGradientSection(startIndex, endIndex, startColor, endColor)
   }
 
   fun addGradientSection(
@@ -91,140 +74,111 @@ class UiGradientTextView : AppCompatTextView {
     }
   }
 
-  fun addGradientSection(gradientText: String, @ColorInt startColor: Int, @ColorInt endColor: Int) {
+  fun addGradientSection(
+    gradientText: String,
+    @ColorInt startColor: Int,
+    @ColorInt endColor: Int,
+    allOccurrences: Boolean = false
+  ) {
     val textString = text.toString()
-    val startIndex = textString.indexOf(gradientText)
-    if (startIndex != -1) {
-      addGradientSection(startIndex, startIndex + gradientText.length, startColor, endColor)
+    if (allOccurrences) {
+      findAllOccurrences(
+        where = textString,
+        query = gradientText,
+        startIndex = 0
+      ) { start, end ->
+        addGradientSection(start, end, startColor, endColor)
+      }
+    } else {
+      val startIndex = textString.indexOf(gradientText)
+      if (startIndex != -1) {
+        addGradientSection(startIndex, startIndex + gradientText.length, startColor, endColor)
+      }
     }
   }
 
-  fun addGradientSection(gradientText: String, startColorHex: String, endColorHex: String) {
+  fun addGradientSection(
+    gradientText: String,
+    startColorHex: String,
+    endColorHex: String,
+    allOccurrences: Boolean = false
+  ) {
     try {
       val startColor = Color.parseColor(startColorHex)
       val endColor = Color.parseColor(endColorHex)
-      addGradientSection(gradientText, startColor, endColor)
+      addGradientSection(gradientText, startColor, endColor, allOccurrences)
     } catch (e: Exception) {
       throw UiWrongColorException
     }
   }
 
   fun addBoldSection(startIndex: Int, endIndex: Int) {
-    val textString = text.toString()
-    val length = textString.length
-    if (startIndex < 0 || startIndex >= length) {
-      throw UiGradientException("Start index is out of bounds")
-    }
-    if (endIndex <= startIndex || endIndex > length) {
-      throw UiGradientException("End index is out of bounds")
-    }
-    val value = textString.substring(startIndex, endIndex)
-    sections.add(BoldSection(value, startIndex, endIndex))
-    prepareSections()
+    textHelper.addBoldSection(startIndex, endIndex)
   }
 
-  fun addBoldSection(value: String) {
+  fun addBoldSection(boldText: String, allOccurrences: Boolean = false) {
     val textString = text.toString()
-    val startIndex = textString.indexOf(value)
-    if (startIndex != -1) {
-      addBoldSection(startIndex, startIndex + value.length)
-    }
-  }
-
-  private fun prepareSections() {
-    if (sections.isEmpty()) {
-      clearSections()
-      return
-    }
-    val textString = text.toString()
-    val spannableString = SpannableString(textString)
-    sections.forEach { section ->
-      when (section) {
-        is StrikeThroughSection -> {
-          spannableString.setSpan(
-            StrikethroughSpan(),
-            section.startIndex,
-            section.endIndex,
-            Spannable.SPAN_COMPOSING
-          )
-        }
-
-        is BoldSection -> {
-          spannableString.setSpan(
-            StyleSpan(Typeface.BOLD),
-            section.startIndex,
-            section.endIndex,
-            Spannable.SPAN_COMPOSING
-          )
-        }
-
-        is GradientSection -> {
-          spannableString.setSpan(
-            GradientSpan(
-              textString,
-              section.startIndex,
-              section.endIndex,
-              section.startColor,
-              section.endColor
-            ),
-            section.startIndex,
-            section.endIndex,
-            Spannable.SPAN_COMPOSING
-          )
-        }
+    if (allOccurrences) {
+      findAllOccurrences(
+        where = textString,
+        query = boldText,
+        startIndex = 0
+      ) { start, end ->
+        addBoldSection(start, end)
+      }
+    } else {
+      val startIndex = textString.indexOf(boldText)
+      if (startIndex != -1) {
+        addBoldSection(startIndex, startIndex + boldText.length)
       }
     }
-    text = spannableString
   }
 
-  sealed class Section {
-    abstract val value: String
-    abstract val startIndex: Int
-    abstract val endIndex: Int
+  fun addItalicSection(startIndex: Int, endIndex: Int) {
+    textHelper.addItalicSection(startIndex, endIndex)
   }
 
-  data class StrikeThroughSection(
-    override val value: String,
-    override val startIndex: Int,
-    override val endIndex: Int
-  ) : Section()
+  fun addItalicSection(italicText: String, allOccurrences: Boolean = false) {
+    val textString = text.toString()
+    if (allOccurrences) {
+      findAllOccurrences(
+        where = textString,
+        query = italicText,
+        startIndex = 0
+      ) { start, end ->
+        addItalicSection(start, end)
+      }
+    } else {
+      val startIndex = textString.indexOf(italicText)
+      if (startIndex != -1) {
+        addItalicSection(startIndex, startIndex + italicText.length)
+      }
+    }
+  }
 
-  data class BoldSection(
-    override val value: String,
-    override val startIndex: Int,
-    override val endIndex: Int
-  ) : Section()
+  private fun findAllOccurrences(
+    where: String,
+    query: String,
+    startIndex: Int = 0,
+    callback: (start: Int, end: Int) -> Unit
+  ) {
+    val length = query.length
 
-  data class GradientSection(
-    override val value: String,
-    val startColor: Int,
-    val endColor: Int,
-    override val startIndex: Int,
-    override val endIndex: Int
-  ) : Section()
+    var startInternal = -1
+    var end = false
 
-  private class GradientSpan(
-    private val text: String,
-    private val startIndex: Int,
-    private val endIndex: Int,
-    private val colorStart: Int,
-    private val colorEnd: Int
-  ) : CharacterStyle(), UpdateAppearance {
-
-    override fun updateDrawState(tp: TextPaint?) {
-      tp ?: return
-      val startX = tp.measureText(text, 0, startIndex)
-      val endX = startX + tp.measureText(text, startIndex, endIndex)
-
-      tp.shader = LinearGradient(
-        startX,
-        0f,
-        endX,
-        0f,
-        colorStart,
-        colorEnd,
-        Shader.TileMode.MIRROR
-      )
+    while (!end) {
+      startInternal = if (startInternal == -1) {
+        where.indexOf(query, startIndex)
+      } else {
+        where.indexOf(query, startIndex = startInternal)
+      }
+      if (startInternal == -1) {
+        end = true
+      } else {
+        callback.invoke(startInternal, startInternal + length)
+        startInternal += length
+      }
     }
   }
 }

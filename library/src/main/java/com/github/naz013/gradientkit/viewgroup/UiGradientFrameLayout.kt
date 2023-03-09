@@ -1,10 +1,12 @@
-package com.github.naz013.gradientkit
+package com.github.naz013.gradientkit.viewgroup
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.LinearLayout
+import android.widget.FrameLayout
+import com.github.naz013.gradientkit.R
+import com.github.naz013.gradientkit.UiGradientBackgroundHelper
 
-class UiGradientLinearLayout : LinearLayout {
+class UiGradientFrameLayout : FrameLayout {
 
   constructor(context: Context) : super(context) {
     init(context, null)
@@ -24,33 +26,34 @@ class UiGradientLinearLayout : LinearLayout {
 
   private fun init(context: Context, attrs: AttributeSet?) {
     if (attrs != null) {
-      val a = context.theme.obtainStyledAttributes(attrs, R.styleable.UiGradientLinearLayout, 0, 0)
+      val a = context.theme.obtainStyledAttributes(attrs, R.styleable.UiGradientFrameLayout, 0, 0)
       try {
         val animate =
-          a.getBoolean(R.styleable.UiGradientLinearLayout_gradientLinearLayout_animate, false)
+          a.getBoolean(R.styleable.UiGradientFrameLayout_gradientFrameLayout_animate, false)
         val orientation =
-          a.getInt(R.styleable.UiGradientLinearLayout_gradientLinearLayout_orientation, 6)
+          a.getInt(R.styleable.UiGradientFrameLayout_gradientFrameLayout_orientation, 6)
 
         val animEnter = a.getInt(
-          R.styleable.UiGradientLinearLayout_gradientLinearLayout_animationEnterDuration,
+          R.styleable.UiGradientFrameLayout_gradientFrameLayout_animationEnterDuration,
           10
         )
         val animExit = a.getInt(
-          R.styleable.UiGradientLinearLayout_gradientLinearLayout_animationExitDuration,
+          R.styleable.UiGradientFrameLayout_gradientFrameLayout_animationExitDuration,
           5000
         )
 
         val startColor =
-          a.getColor(R.styleable.UiGradientLinearLayout_gradientLinearLayout_startColor, -1)
+          a.getColor(R.styleable.UiGradientFrameLayout_gradientFrameLayout_startColor, -1)
         val centerColor =
-          a.getColor(R.styleable.UiGradientLinearLayout_gradientLinearLayout_centerColor, -1)
+          a.getColor(R.styleable.UiGradientFrameLayout_gradientFrameLayout_centerColor, -1)
         val endColor =
-          a.getColor(R.styleable.UiGradientLinearLayout_gradientLinearLayout_endColor, -1)
+          a.getColor(R.styleable.UiGradientFrameLayout_gradientFrameLayout_endColor, -1)
 
         val colorsId =
-          a.getResourceId(R.styleable.UiGradientLinearLayout_gradientLinearLayout_colors, -1)
+          a.getResourceId(R.styleable.UiGradientFrameLayout_gradientFrameLayout_colors, -1)
 
-        val cornerRadius = a.getDimension(R.styleable.UiGradientLinearLayout_gradientLinearLayout_cornerRadius, 0f)
+        val cornerRadius =
+          a.getDimension(R.styleable.UiGradientFrameLayout_gradientFrameLayout_cornerRadius, 0f)
 
         val colors = if (startColor != -1 && endColor != -1) {
           if (centerColor == -1) {
@@ -64,7 +67,7 @@ class UiGradientLinearLayout : LinearLayout {
           null
         }
         if (colors != null) {
-          val gradientHelper = UiGradientHelper(
+          val gradientHelper = UiGradientBackgroundHelper(
             colors,
             cornerRadius,
             orientation,

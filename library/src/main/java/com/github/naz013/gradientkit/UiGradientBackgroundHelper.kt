@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.GradientDrawable.Orientation
 
-internal class UiGradientHelper(
+internal class UiGradientBackgroundHelper(
   private val colors: IntArray,
   private val cornerRadius: Float,
   private val orientation: Int,

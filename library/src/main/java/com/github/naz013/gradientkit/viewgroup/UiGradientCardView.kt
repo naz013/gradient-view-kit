@@ -1,7 +1,9 @@
-package com.github.naz013.gradientkit
+package com.github.naz013.gradientkit.viewgroup
 
 import android.content.Context
 import android.util.AttributeSet
+import com.github.naz013.gradientkit.R
+import com.github.naz013.gradientkit.UiGradientBackgroundHelper
 import com.google.android.material.card.MaterialCardView
 
 class UiGradientCardView : MaterialCardView {
@@ -46,7 +48,7 @@ class UiGradientCardView : MaterialCardView {
           null
         }
         if (colors != null) {
-          val gradientHelper = UiGradientHelper(colors, radius, orientation)
+          val gradientHelper = UiGradientBackgroundHelper(colors, radius, orientation)
           gradientHelper.applyBackground { background = it }
         }
       } finally {

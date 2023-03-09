@@ -1,20 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.github.naz013.gradientkit.UiGradientTextView
-        android:id="@+id/demoText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.github.naz013.gradientkit.UiGradientTextView
+            android:id="@+id/demoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="Hello World!"
+            android:textSize="24sp" />
+
+        <com.github.naz013.gradientkit.viewgroup.UiGradientLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            app:gradientLinearLayout_animate="true"
+            app:gradientLinearLayout_centerColor="#FBD786"
+            app:gradientLinearLayout_endColor="#f7797d"
+            app:gradientLinearLayout_startColor="#C6FFDD">
+
+            <com.github.naz013.gradientkit.UiGradientTextView
+                android:id="@+id/llText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+        </com.github.naz013.gradientkit.viewgroup.UiGradientLinearLayout>
+
+        <com.github.naz013.gradientkit.viewgroup.UiGradientLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:gradientLinearLayout_animate="false"
+            app:gradientLinearLayout_centerColor="#203A43"
+            app:gradientLinearLayout_cornerRadius="10dp"
+            app:gradientLinearLayout_endColor="#2C5364"
+            app:gradientLinearLayout_orientation="TL_BR"
+            app:gradientLinearLayout_startColor="#0F2027">
+
+            <com.github.naz013.gradientkit.UiGradientTextView
+                android:id="@+id/ll2Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+        </com.github.naz013.gradientkit.viewgroup.UiGradientLinearLayout>
+
+        <com.github.naz013.gradientkit.viewgroup.UiGradientFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:gradientFrameLayout_animate="true"
+            app:gradientFrameLayout_animationExitDuration="1000"
+            app:gradientFrameLayout_endColor="#99f2c8"
+            app:gradientFrameLayout_orientation="TOP_BOTTOM"
+            app:gradientFrameLayout_startColor="#1f4037">
+
+            <com.github.naz013.gradientkit.UiGradientTextView
+                android:id="@+id/frameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+        </com.github.naz013.gradientkit.viewgroup.UiGradientFrameLayout>
+
+        <com.github.naz013.gradientkit.viewgroup.UiGradientRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:gradientRelativeLayout_animate="true"
+            app:gradientRelativeLayout_centerColor="#FBD786"
+            app:gradientRelativeLayout_endColor="#f7797d"
+            app:gradientRelativeLayout_orientation="RIGHT_LEFT"
+            app:gradientRelativeLayout_startColor="#C6FFDD">
+
+            <com.github.naz013.gradientkit.UiGradientTextView
+                android:id="@+id/rlText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+        </com.github.naz013.gradientkit.viewgroup.UiGradientRelativeLayout>
+
+        <com.github.naz013.gradientkit.viewgroup.UiGradientCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:gradientCardView_centerColor="#FF8C00"
+            app:gradientCardView_endColor="#FF0080"
+            app:gradientCardView_orientation="BL_TR"
+            app:gradientCardView_startColor="#40E0D0">
+
+            <com.github.naz013.gradientkit.UiGradientTextView
+                android:id="@+id/cardText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+        </com.github.naz013.gradientkit.viewgroup.UiGradientCardView>
+
+        <com.github.naz013.gradientkit.UiGradientButton
+            android:id="@+id/gradientButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:padding="16dp"
+            android:text="Animated Gradient Button with gradient text"
+            app:gradientButton_animate="true"
+            app:gradientButton_cornerRadius="15dp"
+            app:gradientButton_startColor="#40E0D0"
+            app:gradientButton_endColor="#FF0080"
+            android:layout_marginEnd="32dp" />
+
+        <com.github.naz013.gradientkit.UiGradientTextView
+            android:id="@+id/ipsumText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
