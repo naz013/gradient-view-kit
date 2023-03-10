@@ -98,8 +98,7 @@ class MainActivity : AppCompatActivity() {
     )
 
     val gradientCheckbox = findViewById<UiGradientCheckBox>(R.id.gradientCheckbox)
-    gradientCheckbox.addGradientSection(
-      gradientText = "CheckBox",
+    gradientCheckbox.addGradientToFullText(
       Color.parseColor("#009FFF"),
       Color.parseColor("#ec2F4B")
     )

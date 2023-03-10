@@ -50,6 +50,26 @@ class UiGradientTextView : AppCompatTextView {
     }
   }
 
+  fun addGradientToFullText(
+    @ColorInt startColor: Int,
+    @ColorInt endColor: Int
+  ) {
+    addGradientSection(0, length(), startColor, endColor)
+  }
+
+  fun addGradientToFullText(
+    startColorHex: String,
+    endColorHex: String
+  ) {
+    try {
+      val startColor = Color.parseColor(startColorHex)
+      val endColor = Color.parseColor(endColorHex)
+      addGradientToFullText(startColor, endColor)
+    } catch (e: Exception) {
+      throw UiWrongColorException
+    }
+  }
+
   fun addGradientSection(
     startIndex: Int,
     endIndex: Int,
