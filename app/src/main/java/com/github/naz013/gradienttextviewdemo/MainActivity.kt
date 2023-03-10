@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.github.naz013.gradientkit.UiGradientButton
+import com.github.naz013.gradientkit.UiGradientCheckBox
 import com.github.naz013.gradientkit.UiGradientTextView
 
 class MainActivity : AppCompatActivity() {
@@ -94,6 +95,13 @@ class MainActivity : AppCompatActivity() {
       gradientText = "Gradient",
       startColor = Color.parseColor("#0F2027"),
       endColor = Color.parseColor("#203A43")
+    )
+
+    val gradientCheckbox = findViewById<UiGradientCheckBox>(R.id.gradientCheckbox)
+    gradientCheckbox.addGradientSection(
+      gradientText = "CheckBox",
+      Color.parseColor("#009FFF"),
+      Color.parseColor("#ec2F4B")
     )
   }
 

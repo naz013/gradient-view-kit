@@ -136,12 +136,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
             android:padding="16dp"
             android:text="Animated Gradient Button with gradient text"
             app:gradientButton_animate="true"
             app:gradientButton_cornerRadius="15dp"
-            app:gradientButton_startColor="#40E0D0"
             app:gradientButton_endColor="#FF0080"
+            app:gradientButton_startColor="#40E0D0" />
+
+        <com.github.naz013.gradientkit.UiGradientCheckBox
+            android:id="@+id/gradientCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:text="CheckBox with gradient text"
             android:layout_marginEnd="32dp" />
 
         <com.github.naz013.gradientkit.UiGradientTextView
